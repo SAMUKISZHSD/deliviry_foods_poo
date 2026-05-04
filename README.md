@@ -1,5 +1,6 @@
 # Sistema de Delivery — Guia do UML
 ---
+<img width="1254" height="881" alt="delivery_uml drawio" src="https://github.com/user-attachments/assets/d35842e9-dabf-431e-9404-93c97c5f6f2c" />
 
 ## Visão geral
 
