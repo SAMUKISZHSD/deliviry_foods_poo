@@ -1,0 +1,246 @@
+
+<div id="erd"></div>
+<style>
+#erd { padding: 8px 0; }
+#erd svg { width: 100%; }
+.mermaid-label { font-family: var(--font-sans) !important; }
+</style>
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+await document.fonts.ready;
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  fontFamily: '"Anthropic Sans", sans-serif',
+  themeVariables: {
+    darkMode: dark,
+    fontSize: '13px',
+    fontFamily: '"Anthropic Sans", sans-serif',
+    lineColor: dark ? '#9c9a92' : '#73726c',
+    textColor: dark ? '#c2c0b6' : '#3d3d3a',
+    primaryColor: dark ? '#2a2a40' : '#eeedfe',
+    primaryBorderColor: dark ? '#534AB7' : '#534AB7',
+    primaryTextColor: dark ? '#cecbf6' : '#26215C',
+    secondaryColor: dark ? '#1a2a1a' : '#e1f5ee',
+    secondaryBorderColor: dark ? '#0F6E56' : '#0F6E56',
+    secondaryTextColor: dark ? '#9fe1cb' : '#04342C',
+    tertiaryColor: dark ? '#2a1a10' : '#faeeda',
+    tertiaryBorderColor: dark ? '#854F0B' : '#854F0B',
+    tertiaryTextColor: dark ? '#fac775' : '#412402',
+    noteBkgColor: dark ? '#1a1a2a' : '#f5f5ff',
+    noteTextColor: dark ? '#c2c0b6' : '#3d3d3a',
+    edgeLabelBackground: dark ? '#1e1e1e' : '#ffffff',
+    classText: dark ? '#c2c0b6' : '#3d3d3a',
+  },
+});
+
+const diagram = `classDiagram
+    class Restaurante {
+        -Long id
+        -String nome
+        -String endereco
+        -String telefone
+        -String categoria
+        +getId() Long
+        +getNome() String
+        +getEndereco() String
+        +getTelefone() String
+        +getCategoria() String
+        +setNome(nome String) void
+        +setEndereco(end String) void
+    }
+
+    class Produto {
+        -Long id
+        -String nome
+        -String descricao
+        -Double preco
+        -Long restauranteId
+        +getId() Long
+        +getNome() String
+        +getPreco() Double
+        +getRestauranteId() Long
+        +setPreco(preco Double) void
+        +setNome(nome String) void
+    }
+
+    class Cliente {
+        -Long id
+        -String nome
+        -String email
+        -String telefone
+        -String endereco
+        +getId() Long
+        +getNome() String
+        +getEmail() String
+        +getTelefone() String
+        +getEndereco() String
+        +setEmail(email String) void
+    }
+
+    class Entregador {
+        -Long id
+        -String nome
+        -String telefone
+        -String veiculo
+        -StatusEntregador status
+        +getId() Long
+        +getNome() String
+        +getStatus() StatusEntregador
+        +setStatus(s StatusEntregador) void
+        +isDisponivel() boolean
+    }
+
+    class Pedido {
+        -Long id
+        -Long clienteId
+        -Long restauranteId
+        -Long entregadorId
+        -StatusPedido status
+        -LocalDateTime dataPedido
+        -Double subtotal
+        -Double desconto
+        -Double taxaEntrega
+        -Double valorTotal
+        +getId() Long
+        +calcularSubtotal() Double
+        +aplicarDesconto() Double
+        +calcularTotal() Double
+        +getResumo() String
+        +atribuirEntregador(e Entregador) void
+    }
+
+    class ItemPedido {
+        -Long id
+        -Long pedidoId
+        -Long produtoId
+        -Integer quantidade
+        -Double precoUnitario
+        +getId() Long
+        +getPedidoId() Long
+        +getProdutoId() Long
+        +getQuantidade() Integer
+        +getSubtotal() Double
+    }
+
+    class StatusPedido {
+        <<enumeration>>
+        AGUARDANDO
+        CONFIRMADO
+        EM_PREPARO
+        SAIU_ENTREGA
+        ENTREGUE
+        CANCELADO
+    }
+
+    class StatusEntregador {
+        <<enumeration>>
+        DISPONIVEL
+        EM_ENTREGA
+        INATIVO
+    }
+
+    class CalculadorPedido {
+        <<service>>
+        +calcularSubtotal(itens List) Double
+        +calcularDesconto(subtotal Double) Double
+        +calcularTotal(subtotal Double) Double
+        +gerarResumo(pedido Pedido) String
+    }
+
+    class DatabaseConnection {
+        <<singleton>>
+        -Connection connection
+        -static instance DatabaseConnection
+        -DatabaseConnection()
+        +getInstance() DatabaseConnection
+        +getConnection() Connection
+        +disconnect() void
+    }
+
+    class RestauranteDAO {
+        <<repository>>
+        -DatabaseConnection db
+        +inserir(r Restaurante) void
+        +buscarPorId(id Long) Restaurante
+        +listarTodos() List
+        +atualizar(r Restaurante) void
+        +excluir(id Long) void
+        +relatorioVendas() List
+    }
+
+    class ProdutoDAO {
+        <<repository>>
+        -DatabaseConnection db
+        +inserir(p Produto) void
+        +buscarPorId(id Long) Produto
+        +listarPorRestaurante(rId Long) List
+        +atualizar(p Produto) void
+        +excluir(id Long) void
+    }
+
+    class ClienteDAO {
+        <<repository>>
+        -DatabaseConnection db
+        +inserir(c Cliente) void
+        +buscarPorId(id Long) Cliente
+        +listarTodos() List
+        +atualizar(c Cliente) void
+        +excluir(id Long) void
+    }
+
+    class EntregadorDAO {
+        <<repository>>
+        -DatabaseConnection db
+        +inserir(e Entregador) void
+        +buscarPorId(id Long) Entregador
+        +listarDisponiveis() List
+        +atualizar(e Entregador) void
+        +excluir(id Long) void
+    }
+
+    class PedidoDAO {
+        <<repository>>
+        -DatabaseConnection db
+        +inserir(p Pedido) void
+        +buscarPorId(id Long) Pedido
+        +listarTodos() List
+        +atualizarStatus(id Long, s StatusPedido) void
+        +excluir(id Long) void
+    }
+
+    class ItemPedidoDAO {
+        <<repository>>
+        -DatabaseConnection db
+        +inserir(i ItemPedido) void
+        +listarPorPedido(pId Long) List
+        +excluirPorPedido(pId Long) void
+    }
+
+    Restaurante "1" --> "0..*" Produto : possui
+    Pedido "1" --> "1..*" ItemPedido : contém
+    Pedido --> StatusPedido : tem status
+    Entregador --> StatusEntregador : tem status
+    Cliente "1" --> "0..*" Pedido : realiza
+    Restaurante "1" --> "0..*" Pedido : recebe
+    Entregador "1" --> "0..*" Pedido : realiza entrega
+    Produto "1" --> "0..*" ItemPedido : referenciado em
+    Pedido ..> CalculadorPedido : usa
+    RestauranteDAO ..> Restaurante : gerencia
+    ProdutoDAO ..> Produto : gerencia
+    ClienteDAO ..> Cliente : gerencia
+    EntregadorDAO ..> Entregador : gerencia
+    PedidoDAO ..> Pedido : gerencia
+    ItemPedidoDAO ..> ItemPedido : gerencia
+    RestauranteDAO ..> DatabaseConnection : usa
+    ProdutoDAO ..> DatabaseConnection : usa
+    ClienteDAO ..> DatabaseConnection : usa
+    EntregadorDAO ..> DatabaseConnection : usa
+    PedidoDAO ..> DatabaseConnection : usa
+    ItemPedidoDAO ..> DatabaseConnection : usa
+`;
+
+const { svg } = await mermaid.render('erd-svg', diagram);
+document.getElementById('erd').innerHTML = svg;
+</script>
