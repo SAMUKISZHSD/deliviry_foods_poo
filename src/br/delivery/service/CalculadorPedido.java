@@ -10,10 +10,6 @@ public class CalculadorPedido {
 
     private static final double TAXA_ENTREGA = 8.00;
 
-    /**
-     * Calcula e preenche todos os valores do pedido:
-     * subtotal, desconto, taxaEntrega e valorFinal.
-     */
     public void calcular(Pedido pedido, List<ItemPedido> itens) {
         double subtotal = calcularSubtotal(itens);
         double desconto = calcularDesconto(subtotal);
@@ -45,9 +41,6 @@ public class CalculadorPedido {
         return 0.0;
     }
 
-    /**
-     * Retorna um resumo detalhado do cálculo em texto.
-     */
     public String gerarResumo(Pedido pedido) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n========== RESUMO DO PEDIDO #").append(pedido.getId()).append(" ==========\n");

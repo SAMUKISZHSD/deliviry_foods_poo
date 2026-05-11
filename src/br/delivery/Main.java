@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Main {
 
     // -----------------------------------------------------------------------
-    // DAOs e serviços (injeção manual — fácil de trocar para JDBC)
+    // DAOs e services
     // -----------------------------------------------------------------------
     private static final DatabaseConnection db = DatabaseConnection.getInstance();
     private static final RestauranteDAO restauranteDAO = new RestauranteDAO(db);
@@ -32,12 +32,12 @@ public class Main {
     }
 
     // -----------------------------------------------------------------------
-    // Menu principal
+    // Menu do sistema
     // -----------------------------------------------------------------------
     private static void menuPrincipal() {
         while (true) {
             System.out.println("\n╔══════════════════════════════════════╗");
-            System.out.println("║    SISTEMA DE DELIVERY — MENU        ║");
+            System.out.println("║         SISTEMA DE DELIVERY          ║");
             System.out.println("╠══════════════════════════════════════╣");
             System.out.println("║  1. Restaurantes                     ║");
             System.out.println("║  2. Produtos                         ║");
@@ -467,7 +467,7 @@ public class Main {
     }
 
     // -----------------------------------------------------------------------
-    // Dados iniciais para teste (MVP)
+    // Dados ficticios para testes MVP do sistema
     // -----------------------------------------------------------------------
     private static void popularDadosIniciais() {
         System.out.println("\n[MVP] Populando dados de exemplo...");
@@ -495,7 +495,7 @@ public class Main {
     }
 
     // -----------------------------------------------------------------------
-    // Utilitários de leitura segura
+    // Utilitários de leitura segura - Umas caprichos a mais
     // -----------------------------------------------------------------------
     private static int lerInt() {
         while (true) {

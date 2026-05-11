@@ -1,8 +1,8 @@
 package br.delivery.dao;
 
 /**
- * Singleton responsável pela "conexão" com o banco de dados.
  *
+ * PARA QUANDO FOR ADD DB
  * MVP: usa listas em memória (banco fictício).
  * Para migrar para PostgreSQL:
  *   1. Adicione a dependência JDBC (postgresql driver) ao classpath.
@@ -14,9 +14,6 @@ package br.delivery.dao;
  */
 public class DatabaseConnection {
 
-    // -----------------------------------------------------------------------
-    // Singleton
-    // -----------------------------------------------------------------------
     private static DatabaseConnection instance;
 
     private DatabaseConnection() {
