@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Main {
 
     // -----------------------------------------------------------------------
-    // DAOs e services
+    // DAOs e Services
     // -----------------------------------------------------------------------
     private static final DatabaseConnection db = DatabaseConnection.getInstance();
     private static final RestauranteDAO restauranteDAO = new RestauranteDAO(db);
@@ -32,7 +32,7 @@ public class Main {
     }
 
     // -----------------------------------------------------------------------
-    // Menu do sistema
+    // Menu do Sistema
     // -----------------------------------------------------------------------
     private static void menuPrincipal() {
         while (true) {
@@ -470,7 +470,6 @@ public class Main {
     // Dados ficticios para testes MVP do sistema
     // -----------------------------------------------------------------------
     private static void popularDadosIniciais() {
-        System.out.println("\n[MVP] Populando dados de exemplo...");
 
         // Restaurantes
         restauranteDAO.inserir(new Restaurante("Pizzaria Bella", "Rua das Flores, 10", "11 9999-1111", "Pizzaria"));
@@ -490,8 +489,6 @@ public class Main {
         // Entregadores
         entregadorDAO.inserir(new Entregador("João Moto", "11 93333-0001", "Moto"));
         entregadorDAO.inserir(new Entregador("Maria Bike", "11 94444-0002", "Bicicleta"));
-
-        System.out.println("[MVP] Dados carregados. Bem-vindo!\n");
     }
 
     // -----------------------------------------------------------------------

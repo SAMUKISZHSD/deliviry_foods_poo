@@ -18,7 +18,7 @@ public class DatabaseConnection {
 
     private DatabaseConnection() {
         // TODO JDBC: connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        System.out.println("[DB] Banco fictício (memória) inicializado.");
+        System.out.println("DADOS DE TESTES");
     }
 
     public static DatabaseConnection getInstance() {
