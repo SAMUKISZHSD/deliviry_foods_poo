@@ -1,4 +1,4 @@
-
+package br.delivery.dao;
 
 /**
  * Singleton responsável pela "conexão" com o banco de dados.

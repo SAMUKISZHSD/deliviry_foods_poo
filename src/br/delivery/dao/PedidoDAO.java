@@ -1,12 +1,11 @@
-
+package br.delivery.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import Pedido;
-import StatusPedido;
+import br.delivery.model.*;
 
 public class PedidoDAO {
 

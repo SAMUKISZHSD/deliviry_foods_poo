@@ -1,10 +1,9 @@
+package br.delivery.dao;
 
-
+import br.delivery.model.Cliente;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import Cliente;
 
 public class ClienteDAO {
 

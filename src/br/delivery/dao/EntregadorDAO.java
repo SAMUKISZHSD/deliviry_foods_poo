@@ -1,12 +1,11 @@
-
+package br.delivery.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import Entregador;
-import StatusEntregador;
+import br.delivery.model.*;;
 
 public class EntregadorDAO {
 

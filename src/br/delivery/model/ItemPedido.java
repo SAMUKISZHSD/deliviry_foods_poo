@@ -1,4 +1,4 @@
-
+package br.delivery.model;
 
 public class ItemPedido {
     private int id;

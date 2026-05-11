@@ -1,10 +1,10 @@
-
+package br.delivery.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import Restaurante;
+import br.delivery.model.*;
 
 public class RestauranteDAO {
 

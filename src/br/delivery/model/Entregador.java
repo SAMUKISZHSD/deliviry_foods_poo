@@ -1,4 +1,4 @@
-
+package br.delivery.model;
 
 public class Entregador {
     private int id;

@@ -1,4 +1,4 @@
-
+package br.delivery.model;
 
 public enum StatusEntregador {
     DISPONIVEL("Disponível"),

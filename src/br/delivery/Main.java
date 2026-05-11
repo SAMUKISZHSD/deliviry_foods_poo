@@ -1,29 +1,12 @@
 package br.delivery;
-
+ 
 import br.delivery.dao.*;
 import br.delivery.model.*;
 import br.delivery.service.CalculadorPedido;
-
+ 
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-
-import Cliente;
-import ClienteDAO;
-import DatabaseConnection;
-import Entregador;
-import EntregadorDAO;
-import ItemPedido;
-import ItemPedidoDAO;
-import Pedido;
-import PedidoDAO;
-import Produto;
-import ProdutoDAO;
-import Restaurante;
-import RestauranteDAO;
-import StatusEntregador;
-import StatusPedido;
-
 public class Main {
 
     // -----------------------------------------------------------------------

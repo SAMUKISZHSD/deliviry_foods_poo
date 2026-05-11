@@ -1,4 +1,4 @@
-
+package br.delivery.model;
 
 public class Restaurante {
     private int id;

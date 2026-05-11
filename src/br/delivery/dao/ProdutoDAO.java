@@ -1,11 +1,11 @@
-
+package br.delivery.dao;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import Produto;
+import br.delivery.model.*;
 
 public class ProdutoDAO {
 
