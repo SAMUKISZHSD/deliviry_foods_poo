@@ -1,44 +1,100 @@
 package br.delivery.dao;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
+ * Singleton que gerencia o pool de conexões JDBC com o PostgreSQL.
  *
- * PARA QUANDO FOR ADD DB
- * MVP: usa listas em memória (banco fictício).
- * Para migrar para PostgreSQL:
- *   1. Adicione a dependência JDBC (postgresql driver) ao classpath.
- *   2. Substitua o bloco "// TODO JDBC" abaixo por:
- *        connection = DriverManager.getConnection(URL, USER, PASSWORD);
- *   3. Altere o método getConnection() para retornar java.sql.Connection.
- *   4. Atualize os DAOs para usar queries SQL no lugar das listas.
- *   -- As classes model e service NÃO precisam mudar. --
+ * Dependências necessárias (Maven):
+ *
+ *   <dependency>
+ *       <groupId>org.postgresql</groupId>
+ *       <artifactId>postgresql</artifactId>
+ *       <version>42.7.3</version>
+ *   </dependency>
+ *   <dependency>
+ *       <groupId>com.zaxxer</groupId>
+ *       <artifactId>HikariCP</artifactId>
+ *       <version>5.1.0</version>
+ *   </dependency>
+ *
+ * Variáveis de ambiente esperadas (ou altere as constantes abaixo):
+ *   DB_URL      → jdbc:postgresql://localhost:5432/delivery
+ *   DB_USER     → postgres
+ *   DB_PASSWORD → sua_senha
  */
 public class DatabaseConnection {
 
+    // ---------------------------------------------------------------
+    // Configuração — prefira variáveis de ambiente em produção
+    // ---------------------------------------------------------------
+    private static final String URL  = System.getenv().getOrDefault(
+            "DB_URL", "jdbc:postgresql://localhost:5432/delivery_food");
+    private static final String USER = System.getenv().getOrDefault(
+            "DB_USER", "postgres");
+    private static final String PASS = System.getenv().getOrDefault(
+            "DB_PASSWORD", "admin");
+
+    // ---------------------------------------------------------------
+    // Singleton + Pool (HikariCP)
+    // ---------------------------------------------------------------
     private static DatabaseConnection instance;
+    private final HikariDataSource dataSource;
 
     private DatabaseConnection() {
-        // TODO JDBC: connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        System.out.println("DADOS DE TESTES");
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(URL);
+        config.setUsername(USER);
+        config.setPassword(PASS);
+        config.setMaximumPoolSize(10);
+        config.setMinimumIdle(2);
+        config.setConnectionTimeout(30_000);   // 30 s
+        config.setIdleTimeout(600_000);        // 10 min
+        config.setMaxLifetime(1_800_000);      // 30 min
+        config.setConnectionTestQuery("SELECT 1");
+
+        this.dataSource = new HikariDataSource(config);
+        System.out.println("✔ Conectado ao PostgreSQL: " + URL);
     }
 
-    public static DatabaseConnection getInstance() {
+    public static synchronized DatabaseConnection getInstance() {
         if (instance == null) {
             instance = new DatabaseConnection();
         }
         return instance;
     }
 
-    // -----------------------------------------------------------------------
-    // Stub: retorna um token simbólico para o banco fictício.
-    // Quando migrar para JDBC, troque o retorno por java.sql.Connection.
-    // -----------------------------------------------------------------------
-    public Object getConnection() {
-        // TODO JDBC: return connection;
-        return "IN_MEMORY_DB";
+    /** Retorna uma conexão do pool. Deve ser fechada após o uso (try-with-resources). */
+    public Connection getConnection() throws SQLException {
+        return dataSource.getConnection();
     }
 
-    public boolean isConnected() {
-        // TODO JDBC: return connection != null && !connection.isClosed();
-        return true;
+public boolean testarConexao() {
+
+    try (Connection conn = getConnection()) {
+
+        if (conn != null && !conn.isClosed()) {
+            return true;
+        }
+
+    } catch (SQLException e) {
+
+        System.out.println("✘ Erro ao conectar ao PostgreSQL:");
+        System.out.println("Mensagem: " + e.getMessage());
+
     }
+
+    return false;
+}
+
+/** Fechar o pool ao encerrar a aplicação */
+public void close() {
+    if (dataSource != null && !dataSource.isClosed()) {
+        dataSource.close();
+    }
+}
 }

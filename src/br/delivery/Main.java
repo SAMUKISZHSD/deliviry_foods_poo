@@ -26,10 +26,52 @@ public class Main {
     // -----------------------------------------------------------------------
     // Main
     // -----------------------------------------------------------------------
-    public static void main(String[] args) {
-        popularDadosIniciais();
-        menuPrincipal();
+public static void main(String[] args) {
+
+    System.out.println("╔══════════════════════════════════════╗");
+    System.out.println("║        DELIVERY FOODS SYSTEM        ║");
+    System.out.println("╚══════════════════════════════════════╝");
+
+    System.out.println("\nIniciando sistema...");
+
+    // -------------------------------------------------------
+    // Validação da conexão com banco
+    // -------------------------------------------------------
+    if (!db.testarConexao()) {
+
+        System.out.println("\n✘ ERRO AO INICIAR O SISTEMA");
+        System.out.println("Não foi possível conectar ao PostgreSQL.");
+
+        System.out.println("\nVerifique:");
+        System.out.println("• Se o PostgreSQL está iniciado");
+        System.out.println("• Usuário e senha");
+        System.out.println("• Nome do banco");
+        System.out.println("• Porta 5432");
+
+        return;
     }
+
+    System.out.println("✔ Banco de dados conectado com sucesso!");
+
+    // -------------------------------------------------------
+    // Carrega dados iniciais
+    // -------------------------------------------------------
+    popularDadosIniciais();
+
+    // -------------------------------------------------------
+    // Inicia menus
+    // -------------------------------------------------------
+    menuPrincipal();
+
+    // -------------------------------------------------------
+    // Encerramento seguro
+    // -------------------------------------------------------
+    db.close();
+
+    System.out.println("\n✔ Sistema encerrado com sucesso.");
+}
+
+    
 
     // -----------------------------------------------------------------------
     // Menu do Sistema
@@ -470,7 +512,8 @@ public class Main {
     // Dados ficticios para testes MVP do sistema
     // -----------------------------------------------------------------------
     private static void popularDadosIniciais() {
-
+        if (!restauranteDAO.listarTodos().isEmpty()) return;
+        
         // Restaurantes
         restauranteDAO.inserir(new Restaurante("Pizzaria Bella", "Rua das Flores, 10", "11 9999-1111", "Pizzaria"));
         restauranteDAO.inserir(new Restaurante("Sushi do Mestre", "Av. Japão, 55", "11 9999-2222", "Japonesa"));
